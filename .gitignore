@@ -1,0 +1,21 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs/Project Micro Defense/v16
+*.meta
+/Assets/URP
+/Library
+/Logs
+/obj/Debug
+/Packages
+/Temp
+/ProjectSettings
+/Assembly-CSharp-Editor.csproj
+/Assembly-CSharp-firstpass.csproj
+/Assembly-CSharp.csproj
+/Project Micro Defense.sln
+/Assets/Resources
+/Assets/Plugins/Demigiant/DOTween
+/Assets/Interface And Item Sounds
+/Assets/64 flat icons
