@@ -7,31 +7,67 @@ namespace Micro
     [RequireComponent(typeof (TowerTargetRecorder))]
     public class BaseTower : MonoBehaviour
     {
+        public enum TowerState
+        {
+            INACTIVE = 0,
+            SHOOTING = 1,
+            TRANSITIONING = 2,
+        }
+
+        public TowerState towerState = TowerState.INACTIVE;
+
         public GameObject target;
         public float maxFireRate = 1.0f;
         public float fireRate = 0f;
 
         private void Update()
         {
-            target = GetComponent<TowerTargetRecorder>().FetchTarget();
-            if (target != null)
+            if (towerState == TowerState.SHOOTING)
             {
-                // Shoot
-                fireRate -= Time.deltaTime;
-                if (fireRate <= 0)
+                target = GetComponent<TowerTargetRecorder>().FetchTarget();
+                if (target != null)
                 {
-                    fireRate = maxFireRate;
-                    Shoot();
-                }
+                    // Shoot
+                    fireRate -= Time.deltaTime;
+                    if (fireRate <= 0)
+                    {
+                        fireRate = maxFireRate;
+                        Shoot();
+                    }
 
-                // Look at target
-                TurnTowardsTarget();
+                    // Look at target
+                    TurnTowardsTarget();
+                }
+                else
+                {
+                    // Reset if no target
+                    fireRate = maxFireRate;
+                }
             }
-            else
-            {
-                // Reset if no target
-                fireRate = maxFireRate;
-            }
+        }
+
+        public virtual void TransitionToShooting()
+        {
+            towerState = TowerState.TRANSITIONING;
+
+            OnTransitionToShootingComplete();
+        }
+
+        public virtual void OnTransitionToShootingComplete()
+        {
+            towerState = TowerState.SHOOTING;
+        }
+
+        public virtual void TransitionToInactive()
+        {
+            towerState = TowerState.TRANSITIONING;
+
+            OnTransitionToInactiveComplete();
+        }
+
+        public virtual void OnTransitionToInactiveComplete()
+        {
+            towerState = TowerState.INACTIVE;
         }
 
         public virtual void Shoot()
