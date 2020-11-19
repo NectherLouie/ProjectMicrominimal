@@ -21,61 +21,19 @@ namespace Micro
     }
 
     [RequireComponent(typeof(NavMeshAgent))]
-    [RequireComponent(typeof(UnitEventBoardInjector))]
+    [RequireComponent(typeof(UnitEventBoardMediator))]
     public class BaseUnit : MonoBehaviour
     {
-        public NavMeshAgent navMeshAgent;
-        public GameObject selected;
-
-        public UnitSelectedState unitSelectedState = UnitSelectedState.DESELECTED;
-
-        private UnitEventBoardInjector unitEventBoardInjector;
+        protected NavMeshAgent navMeshAgent;
+        
+        protected UnitEventBoardMediator eventMediator;
 
         public void Awake()
         {
-            unitEventBoardInjector = GetComponent<UnitEventBoardInjector>();
-            unitEventBoardInjector.Inject();
+            eventMediator = GetComponent<UnitEventBoardMediator>();
+            eventMediator.Init();
 
-            unitEventBoardInjector.board.OnUnitSelected += OnUnitSelected;
-            unitEventBoardInjector.board.OnUnitDeselected += OnUnitDeselected;
-            unitEventBoardInjector.board.OnUnitMoved += OnUnitMoved;
-        }
-
-        private void OnDestroy()
-        {
-            unitEventBoardInjector.board.OnUnitSelected -= OnUnitSelected;
-            unitEventBoardInjector.board.OnUnitDeselected -= OnUnitDeselected;
-            unitEventBoardInjector.board.OnUnitMoved -= OnUnitMoved;
-        }
-
-        private void OnUnitSelected(RaycastHit pHitInfo)
-        {
-            if (pHitInfo.transform.name == transform.name)
-            {
-                if (unitSelectedState != UnitSelectedState.SELECTED)
-                {
-                    unitSelectedState = UnitSelectedState.SELECTED;
-
-                    // Selection Visuals
-                    selected.SetActive(true);
-                }
-            }
-        }
-
-        private void OnUnitDeselected()
-        {
-            unitSelectedState = UnitSelectedState.DESELECTED;
-
-            // Selection Visuals
-            selected.SetActive(false);
-        }
-
-        private void OnUnitMoved(RaycastHit pHitInfo)
-        {
-            if (unitSelectedState == UnitSelectedState.SELECTED)
-            {
-                navMeshAgent.SetDestination(pHitInfo.point);
-            }
+            navMeshAgent = GetComponent<NavMeshAgent>();
         }
     }
 }
