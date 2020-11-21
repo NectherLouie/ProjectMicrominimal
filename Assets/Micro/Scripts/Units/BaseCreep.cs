@@ -4,9 +4,13 @@ using UnityEngine;
 
 namespace Micro
 {
-    public class UnitEngineer : BaseUnit
+    [RequireComponent(typeof(WaypointNavigator))]
+    public class BaseCreep : BaseUnit
     {
         public GameObject selected;
+        public float speed = 2.0f;
+
+        private WaypointNavigator waypointNavigator;
 
         public new void Awake()
         {
@@ -14,15 +18,15 @@ namespace Micro
 
             eventMediator.AddOnUnitSelected(OnUnitSelected);
             eventMediator.AddOnUnitDeselected(OnUnitDeselected);
-            eventMediator.AddOnUnitMoved(OnUnitMoved);
             eventMediator.AddOnUnitHovered(OnUnitHovered);
+
+            waypointNavigator = GetComponent<WaypointNavigator>();
         }
 
         private void OnDestroy()
         {
             eventMediator.RemoveOnUnitSelected(OnUnitSelected);
             eventMediator.RemoveOnUnitDeselected(OnUnitDeselected);
-            eventMediator.RemoveOnUnitMoved(OnUnitMoved);
             eventMediator.RemoveOnUnitHovered(OnUnitHovered);
         }
 
@@ -34,6 +38,11 @@ namespace Micro
             {
                 hasReachedDestination = false;
             }
+        }
+
+        public void OnSpawn()
+        {
+            waypointNavigator.StartNavigation();
         }
 
         private void OnUnitSelected(RaycastHit pHitInfo)
@@ -56,16 +65,6 @@ namespace Micro
 
             // Selection Visuals
             selected.SetActive(false);
-        }
-
-        private void OnUnitMoved(RaycastHit pHitInfo)
-        {
-            if (unitSelectedState == UnitSelectedState.SELECTED)
-            {
-                unitState = UnitState.MOVING;
-
-                navMeshAgent.SetDestination(pHitInfo.point);
-            }
         }
 
         private void OnUnitHovered(RaycastHit pHitInfo)

@@ -15,7 +15,7 @@ namespace Micro
             
             if (board == null)
             {
-                throw new System.Exception("Injection Failed");
+                throw new System.Exception("UnitEventBoardMediator Failed");
             }
         }
 
@@ -47,6 +47,16 @@ namespace Micro
         public void RemoveOnUnitMoved(Action<RaycastHit> OnUnitMoved)
         {
             board.OnUnitMoved -= OnUnitMoved;
+        }
+
+        public void AddOnUnitHovered(Action<RaycastHit> OnUnitHovered)
+        {
+            board.OnUnitHovered += OnUnitHovered;
+        }
+
+        public void RemoveOnUnitHovered(Action<RaycastHit> OnUnitHovered)
+        {
+            board.OnUnitHovered -= OnUnitHovered;
         }
     }
 }

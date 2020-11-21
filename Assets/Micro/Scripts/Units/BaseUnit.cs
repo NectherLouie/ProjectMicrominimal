@@ -24,9 +24,13 @@ namespace Micro
     [RequireComponent(typeof(UnitEventBoardMediator))]
     public class BaseUnit : MonoBehaviour
     {
-        protected NavMeshAgent navMeshAgent;
-        
+        public UnitSelectedState unitSelectedState = UnitSelectedState.DESELECTED;
+        public UnitState unitState = UnitState.IDLE;
+
+        public bool hasReachedDestination = false;
+
         protected UnitEventBoardMediator eventMediator;
+        protected NavMeshAgent navMeshAgent;
 
         public void Awake()
         {
@@ -34,6 +38,21 @@ namespace Micro
             eventMediator.Init();
 
             navMeshAgent = GetComponent<NavMeshAgent>();
+
+            hasReachedDestination = false;
+        }
+
+        public void Update()
+        {
+            if (unitState == UnitState.MOVING)
+            {
+                hasReachedDestination = navMeshAgent.remainingDistance < 1.0f;
+
+                if (hasReachedDestination)
+                {
+                    unitState = UnitState.IDLE;
+                }
+            }
         }
     }
 }

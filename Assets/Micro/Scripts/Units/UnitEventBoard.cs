@@ -9,8 +9,9 @@ namespace Micro
     public class UnitEventBoard : MonoBehaviour
     {
         public Action<RaycastHit> OnUnitSelected;
-        public Action<RaycastHit> OnUnitMoved;
         public Action OnUnitDeselected;
+        public Action<RaycastHit> OnUnitMoved;
+        public Action<RaycastHit> OnUnitHovered;
 
         public LayerMask navMeshMask;
         public LayerMask unitMask;
@@ -21,11 +22,11 @@ namespace Micro
 
         private void Update()
         {
+            RaycastHit hit;
+            Ray ray = CameraController.main.playCamera.ScreenPointToRay(Input.mousePosition);
+            
             if (unitSelectionActive)
             {
-                RaycastHit hit;
-                Ray ray = CameraController.main.playCamera.ScreenPointToRay(Input.mousePosition);
-                
                 if (Physics.Raycast(ray, out hit, Mathf.Infinity, navMeshMask))
                 {
                     // Click rate delay
@@ -34,7 +35,7 @@ namespace Micro
                     {
                         if (Input.GetMouseButtonDown(1))
                         {
-                            Debug.Log("UnitsEventBoard " + hit.transform.name + " Moved");
+                            Debug.Log("UnitEventBoard " + hit.transform.name + " Moved");
                             clickSelectRate = clickSelectRateReset;
 
                             OnUnitMoved?.Invoke(hit);
@@ -43,7 +44,7 @@ namespace Micro
 
                     if (Input.GetMouseButtonDown(0))
                     {
-                        Debug.Log("UnitsEventBoard Deselected Unit");
+                        Debug.Log("UnitEventBoard Deselected Unit");
 
                         clickSelectRate = clickSelectRateReset;
 
@@ -56,20 +57,23 @@ namespace Micro
 
             if (!unitSelectionActive)
             {
-                RaycastHit hit;
-                Ray ray = CameraController.main.playCamera.ScreenPointToRay(Input.mousePosition);
-
                 if (Physics.Raycast(ray, out hit, Mathf.Infinity, unitMask))
                 {
                     if (Input.GetMouseButtonDown(0))
                     {
                         unitSelectionActive = true;
 
-                        Debug.Log("UnitsEventBoard " + hit.transform.name + " Selected");
+                        Debug.Log("UnitEventBoard " + hit.transform.name + " Selected");
                         
                         OnUnitSelected?.Invoke(hit);
-                    }
+                    }                    
                 }
+            }
+
+            // Hover checks
+            if (Physics.Raycast(ray, out hit, Mathf.Infinity, unitMask))
+            {
+                OnUnitHovered?.Invoke(hit);
             }
         }
     }
