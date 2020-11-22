@@ -11,5 +11,10 @@ namespace Micro
 
         [SerializeField]
         private WaypointNode next;
+
+        public WaypointNode GetNextNode()
+        {
+            return next;
+        }
     }
 }

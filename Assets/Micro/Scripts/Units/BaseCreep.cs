@@ -21,6 +21,9 @@ namespace Micro
             eventMediator.AddOnUnitHovered(OnUnitHovered);
 
             waypointNavigator = GetComponent<WaypointNavigator>();
+            waypointNavigator.OnNavigationStarted += OnNavigationStarted;
+            waypointNavigator.OnNavigationUpdated += OnNavigationUpdated;
+            waypointNavigator.StartNavigation();
         }
 
         private void OnDestroy()
@@ -28,6 +31,10 @@ namespace Micro
             eventMediator.RemoveOnUnitSelected(OnUnitSelected);
             eventMediator.RemoveOnUnitDeselected(OnUnitDeselected);
             eventMediator.RemoveOnUnitHovered(OnUnitHovered);
+
+            waypointNavigator.OnNavigationStarted -= OnNavigationStarted;
+            waypointNavigator.OnNavigationUpdated -= OnNavigationUpdated;
+            waypointNavigator.DestroyNavigation();
         }
 
         public new void Update()
@@ -37,12 +44,25 @@ namespace Micro
             if (hasReachedDestination)
             {
                 hasReachedDestination = false;
+
+                unitState = UnitState.IDLE;
+
+                waypointNavigator.UpdateNavigation();
             }
         }
 
-        public void OnSpawn()
+        private void OnNavigationStarted(WaypointNode pWaypointNode)
         {
-            waypointNavigator.StartNavigation();
+            unitState = UnitState.MOVING;
+
+            navMeshAgent.SetDestination(pWaypointNode.transform.position);
+        }
+
+        private void OnNavigationUpdated(WaypointNode pWaypointNode)
+        {
+            unitState = UnitState.MOVING;
+
+            navMeshAgent.SetDestination(pWaypointNode.transform.position);
         }
 
         private void OnUnitSelected(RaycastHit pHitInfo)
