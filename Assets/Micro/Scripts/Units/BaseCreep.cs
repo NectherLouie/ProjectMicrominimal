@@ -55,14 +55,14 @@ namespace Micro
         {
             unitState = UnitState.MOVING;
 
-            navMeshAgent.SetDestination(pWaypointNode.transform.position);
+            navMeshAgent.SetDestination(pWaypointNode.GetPosition());
         }
 
         private void OnNavigationUpdated(WaypointNode pWaypointNode)
         {
             unitState = UnitState.MOVING;
 
-            navMeshAgent.SetDestination(pWaypointNode.transform.position);
+            navMeshAgent.SetDestination(pWaypointNode.GetPosition());
         }
 
         private void OnUnitSelected(RaycastHit pHitInfo)

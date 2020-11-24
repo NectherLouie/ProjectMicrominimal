@@ -40,7 +40,6 @@ namespace Micro
         {
             if (!hasNode)
             {
-                Debug.Log("WaypointNavigator: " + pCollider.transform.name);
                 currentNode = pCollider.transform.GetComponent<WaypointNode>();
 
                 hasNode = true;

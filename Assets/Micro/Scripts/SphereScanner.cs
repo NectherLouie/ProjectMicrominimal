@@ -31,7 +31,6 @@ namespace Micro
         {
             if (other.transform.GetComponent<T>() != null)
             {
-                Debug.Log("Scanner: " + other.transform.name);
                 OnScannerEnter?.Invoke(other);
             }
         }
@@ -40,7 +39,6 @@ namespace Micro
         {
             if (other.transform.GetComponent<T>() != null)
             {
-                Debug.Log("Scanner: " + other.transform.name);
                 OnScannerStay?.Invoke(other);
             }
         }

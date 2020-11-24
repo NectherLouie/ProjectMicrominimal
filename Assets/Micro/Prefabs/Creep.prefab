@@ -80,7 +80,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af031f72f9bfbfd40b2a0e98a16f306f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentNode: {fileID: 0}
   scanner: {fileID: 3971054988792968176}
 --- !u!195 &5267082699919394860
 NavMeshAgent:
@@ -131,7 +130,7 @@ MonoBehaviour:
   unitSelectedState: 0
   unitState: 0
   hasReachedDestination: 0
-  selected: {fileID: 0}
+  selected: {fileID: 869586263575144446}
   speed: 2
 --- !u!1 &712159686569390177
 GameObject:
@@ -144,7 +143,7 @@ GameObject:
   - component: {fileID: 712159686569390181}
   - component: {fileID: 712159686569390180}
   - component: {fileID: 712159686569390183}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -223,7 +222,7 @@ GameObject:
   - component: {fileID: 5252265619312939441}
   - component: {fileID: 5662033123866050651}
   - component: {fileID: 5252153198015831477}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: SelectedModel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -302,7 +301,7 @@ GameObject:
   - component: {fileID: 3272371632380318098}
   - component: {fileID: 4715694598416255384}
   - component: {fileID: 8988008719394461899}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: Forward
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -382,7 +381,7 @@ GameObject:
   - component: {fileID: 1489260785538320891}
   - component: {fileID: 7424348177826010500}
   - component: {fileID: 3971054988792968176}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: WaypointNodeScanner
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -455,7 +454,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6661250677920835665}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
