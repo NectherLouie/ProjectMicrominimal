@@ -21,7 +21,7 @@ namespace Micro
     }
 
     [RequireComponent(typeof(NavMeshAgent))]
-    [RequireComponent(typeof(UnitEventBoardMediator))]
+    [RequireComponent(typeof(UnitSelectionBoardMediator))]
     public class BaseUnit : MonoBehaviour
     {
         public UnitSelectedState unitSelectedState = UnitSelectedState.DESELECTED;
@@ -29,12 +29,12 @@ namespace Micro
 
         public bool hasReachedDestination = false;
 
-        protected UnitEventBoardMediator eventMediator;
+        protected UnitSelectionBoardMediator eventMediator;
         protected NavMeshAgent navMeshAgent;
 
         public void Awake()
         {
-            eventMediator = GetComponent<UnitEventBoardMediator>();
+            eventMediator = GetComponent<UnitSelectionBoardMediator>();
             eventMediator.Init();
 
             navMeshAgent = GetComponent<NavMeshAgent>();

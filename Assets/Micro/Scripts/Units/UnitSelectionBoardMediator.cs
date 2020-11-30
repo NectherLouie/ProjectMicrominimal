@@ -5,17 +5,17 @@ using System;
 
 namespace Micro
 {
-    public class UnitEventBoardMediator : MonoBehaviour
+    public class UnitSelectionBoardMediator : MonoBehaviour
     {
-        private UnitEventBoard board;
+        private UnitSelectionBoard board;
 
         public void Init()
         {
-            board = FindObjectOfType<UnitEventBoard>();
+            board = FindObjectOfType<UnitSelectionBoard>();
             
             if (board == null)
             {
-                throw new System.Exception("UnitEventBoardMediator Failed");
+                throw new System.Exception("UnitSelectionBoardMediator Failed");
             }
         }
 

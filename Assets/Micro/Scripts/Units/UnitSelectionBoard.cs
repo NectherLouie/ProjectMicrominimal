@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.EventSystems;
 using System;
 
 namespace Micro
 {
-    public class UnitEventBoard : MonoBehaviour
+    public class UnitSelectionBoard : MonoBehaviour
     {
         public Action<RaycastHit> OnUnitSelected;
         public Action OnUnitDeselected;
@@ -22,9 +23,15 @@ namespace Micro
 
         private void Update()
         {
+            // Prevents raycasting through UI
+            if (EventSystem.current.IsPointerOverGameObject(-1))
+            {
+                return;
+            }
+
             RaycastHit hit;
             Ray ray = CameraController.main.playCamera.ScreenPointToRay(Input.mousePosition);
-            
+
             if (unitSelectionActive)
             {
                 if (Physics.Raycast(ray, out hit, Mathf.Infinity, navMeshMask))
