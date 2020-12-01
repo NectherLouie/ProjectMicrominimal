@@ -36,7 +36,8 @@ namespace Warmth
             uiEventMediator = GetComponent<UIEventBoardMediator>();
             uiEventMediator.Init();
 
-            uiEventMediator.AddOnBaseDeployClicked(OnBaseDeployClicked);
+            uiEventMediator.AddOnBaseActivateClicked(OnBaseActivateClicked);
+            uiEventMediator.AddOnBaseDeactivateClicked(OnBaseDeactivateClicked);
         }
 
         private void OnDestroy()
@@ -46,7 +47,7 @@ namespace Warmth
             eventMediator.RemoveOnUnitMoved(OnUnitMoved);
             eventMediator.RemoveOnUnitHovered(OnUnitHovered);
 
-            uiEventMediator.RemoveOnBaseDeployClicked(OnBaseDeployClicked);
+            uiEventMediator.RemoveOnBaseActivateClicked(OnBaseActivateClicked);
         }
 
         public new void Update()
@@ -86,7 +87,6 @@ namespace Warmth
             if (unitSelectedState == UnitSelectedState.SELECTED)
             {
                 unitState = UnitState.MOVING;
-
                 navMeshAgent.SetDestination(pHitInfo.point);
             }
         }
@@ -99,13 +99,42 @@ namespace Warmth
             }
         }
 
-        private void OnBaseDeployClicked()
+        private void OnBaseActivateClicked()
         {
             if (unitSelectedState == UnitSelectedState.SELECTED)
             {
+                hasReachedDestination = true;
+                navMeshAgent.isStopped = true;
+
                 config.radiusDisplay.SetActive(true);
-                config.radiusDisplay.transform.DOScale(new Vector3(config.radius, config.radius, 1.0f), 0.5f);
+                config.radiusDisplay.transform.DOScale(new Vector3(config.radius, config.radius, 1.0f), 0.5f)
+                    .OnComplete(OnBaseActivateAnimationComplete);
             }
+        }
+
+        private void OnBaseActivateAnimationComplete()
+        {
+            uiEventMediator.CompleteUnitBaseActivation();
+        }
+
+        private void OnBaseDeactivateClicked()
+        {
+            if (unitSelectedState == UnitSelectedState.SELECTED)
+            {
+                navMeshAgent.isStopped = false;
+                navMeshAgent.SetDestination(transform.position);
+
+                hasReachedDestination = false;
+
+                config.radiusDisplay.SetActive(true);
+                config.radiusDisplay.transform.DOScale(new Vector3(0, 0, 1.0f), 0.5f)
+                    .OnComplete(OnBaseDeactivateAnimationComplete);
+            }
+        }
+
+        private void OnBaseDeactivateAnimationComplete()
+        {
+            uiEventMediator.CompleteUnitBaseDeactivation();
         }
     }
 }

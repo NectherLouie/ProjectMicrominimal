@@ -11,7 +11,8 @@ namespace Micro
     {
         IDLE = 0,
         MOVING = 1,
-        ACTION_0 = 2
+        ACTION_0 = 2,
+        ACTION_1 = 3,
     }
 
     public enum UnitSelectedState
@@ -46,7 +47,10 @@ namespace Micro
         {
             if (unitState == UnitState.MOVING)
             {
-                hasReachedDestination = navMeshAgent.remainingDistance < 1.0f;
+                if (!navMeshAgent.isStopped)
+                {
+                    hasReachedDestination = navMeshAgent.remainingDistance < 1.0f;
+                }
 
                 if (hasReachedDestination)
                 {
